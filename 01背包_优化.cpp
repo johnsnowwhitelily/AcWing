@@ -23,7 +23,7 @@
 //输出样例：
 //8
 
- //朴素算法
+ //优化算法
 #include <iostream>
 #include <algorithm>
  
@@ -32,7 +32,8 @@
  const int N = 1010;
  int n,m;//n是物体的数量，m是背包的体积
  int v[N],w[N];//v[i]是第i个物体的体积，w[i]第i个物体的价值
- int f[N][N];//f数组定义为全局变量，默认为0
+ //  f(i, 这一层只用到了f（i-1, 这一层 滚动数组
+ int f[N];//int f[N][N];
 
  int main()
  {
@@ -44,10 +45,11 @@
  	//由于0件物品的价值为0，所以f[0][0~m]=0
 
  	for(int i=1;i<=n;i++)//从1件物品开始枚举
- 		for (int j=v[i];j<=m;j++)//枚举所有的体积
- 			f[i][j]=max(f[i-1][j],f[i-1][j-v[i]]+w[i]);//右边的集合当j<v[i]时为空集
+ 		for (int j=m;j>=v[i];j--)//枚举所有的体积	
+            //f[i][j]=max(f[i-1][j],f[i-1][j-v[i]]+w[i]);	
+                f[j]=max(f[j],f[j-v[i]]+w[i]);//f[]是从大向小更新，f[j-v[i]]还停在上一层
 
- 	cout<<f[n][m]<<endl;
+ 	cout<<f[m]<<endl;
 
  	return 0;
  }
