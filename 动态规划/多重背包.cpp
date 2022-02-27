@@ -29,4 +29,29 @@
 10
 */
 
+//朴素算法
+#include <iostream>
+#include <algorithm>
+ 
+ using namespace std;
+
+ const int N = 110;
+ int n,m;//n是物体的种数，m是背包的体积
+ int v[N],w[N],s[N];//v[i]是第i种物体的体积，w[i]第i种物体的价值，s[i]第i种物体的数量
+ int f[N][N];//f数组定义为全局变量，默认为0
+
+ int main()
+ {
+ 	cin>>n>>m; 
+ 	for(int i=1;i<=n;i++) cin>>v[i]>>w[i]>>s[i];//读入所有物品的体积、价值、数量
+
+ 	for(int i=1;i<=n;i++)//从只有第一种物品开始枚举
+ 		for (int j=v[i];j<=m;j++)//枚举所有的体积
+ 			for(int k=0;k*v[i]<=j&&k<=s[i];k++)//枚举第i种物体可能的个数
+ 				f[i][j]=max(f[i-1][j],f[i-1][j-v[i]*k]+w[i]*k);//右边的集合当j<v[i]时为空集
+
+ 	cout<<f[n][m]<<endl;
+
+ 	return 0;
+ }
 
